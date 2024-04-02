@@ -17,10 +17,18 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists and was rented out, false otherwise
 	 */
 
-	public boolean returnCat(int id) {
-		// TODO: Fill in
+	 public boolean returnCat(int id) {
+		Cat cat = getCat(id);
+		if (cat != null && cat.getRented()) {
+			cat.returnCat();
+			System.out.println("Welcome back, " + cat.getName() + "!");
+			return true;
+		} else if (cat != null) {
+			System.out.println(cat.getName() + " is already here!");
+		}
 		return false;
 	}
+	
 
 	/**
 	 * Rent a cat. This should call the .rentCat() method on the cat for the
@@ -32,10 +40,16 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists and was not rented out, false otherwise
 	 */
 
-	public boolean rentCat(int id) {
-		// TODO: Fill in
-		return false;
-	}
+	 public boolean rentCat(int id) {
+        Cat cat = getCat(id);
+        if (cat != null && !cat.getRented()) {
+            cat.rentCat();
+            System.out.println(cat.getName() + " has been rented.");
+            return true;
+        }
+        System.out.println("Sorry, " + cat.getName() + " is not here!");
+        return false;
+    }
 
 	/**
 	 * Rename a cat. This calls the .renameCat(String) method on the cat for the
@@ -46,10 +60,15 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists, false otherwise
 	 */
 
-	public boolean renameCat(int id, String name) {
-		// TODO: Fill in
-		return false;
-	}
+    public boolean renameCat(int id, String name) {
+        Cat cat = getCat(id);
+        if (cat != null) {
+            cat.renameCat(name);
+            return true;
+        }
+        return false;
+    }
+
 
 	/**
 	 * Create a String list from the list of cats using the .toString() method of
@@ -61,10 +80,16 @@ public class RentACatImpl implements RentACat {
 	 * @return "\n"-delimited list of rentable cats
 	 */
 
-	public String listCats() {
-		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
-	}
+    public String listCats() {
+        StringBuilder sb = new StringBuilder();
+        for (Cat cat : cats) {
+            if (!cat.getRented()) {
+                sb.append(cat.toString());
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
 
 	/**
 	 * Given an id, return a reference to the specified cat if a cat with that ID
