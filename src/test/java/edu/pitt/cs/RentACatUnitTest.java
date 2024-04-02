@@ -268,11 +268,9 @@ public class RentACatUnitTest {
         r.addCat(c1);
         r.addCat(c2);
         r.addCat(c3);
-        r.rentCat(2);
+        Mockito.when(c2.getRented()).thenReturn(true);
 
-        boolean ret = r.rentCat(2);
-        assertFalse(ret);
-        //Mockito.verify(c2, never()).getRented();
+        assertFalse(r.rentCat(2));
         assertEquals("Sorry, Old Deuteronomy is not here!\n", out.toString());
     }
 
@@ -294,7 +292,14 @@ public class RentACatUnitTest {
      */
     @Test
     public void testReturnCatNumCats3() {
-        // TODO: Fill in
+        r.addCat(c1);
+        r.addCat(c2);
+        r.addCat(c3);
+        Mockito.when(c2.getRented()).thenReturn(true);
+
+        assertTrue(r.returnCat(2));
+        Mockito.verify(c2).returnCat();
+        assertEquals("Welcome back, Old Deuteronomy!\n", out.toString());
     }
 
     /**
@@ -314,7 +319,13 @@ public class RentACatUnitTest {
      */
     @Test
     public void testReturnFailureCatNumCats3() {
-        // TODO: Fill in
+        r.addCat(c1);
+        r.addCat(c2);
+        r.addCat(c3);
+
+        assertFalse(r.returnCat(2));
+        Mockito.verify(c2, never()).returnCat();
+        assertEquals("Old Deuteronomy is already here!\n", out.toString());
     }
 
 }
